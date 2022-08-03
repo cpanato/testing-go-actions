@@ -13,7 +13,8 @@ build: ## Build mattermost-gitops
 
 .PHONY: yaml-sort sort-repo sort-teams
 yaml_files = $(shell find ${WORK_DIR}/github-data -type f -name "*.yaml" ! -name '*repositories*' ! -name '*teams*' | sort -u)
-yaml-sort: sort-repo sort-teams## Sort all YAML files alphabetically by the username key
+yaml-sort: #sort-repo sort-teams## Sort all YAML files alphabetically by the username key
+	echo ${WORK_DIR}
 	@for f in $(yaml_files); do (yq eval -o=json "$$f" | jq '.[] |= sort_by(.username)' | yq eval -P - > "$$f-new") && mv "$$f-new" "$$f"  || exit 1; done; \
 
 sort-repo:
