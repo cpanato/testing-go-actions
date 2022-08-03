@@ -17,12 +17,6 @@ runs:
   using: "composite"
 
   steps:
-    - run: ls -la
-      shell: bash
-
-    - run: ls -la "$GITHUB_ACTION_PATH/.."
-      shell: bash
-
     - run: |
         cd "$GITHUB_ACTION_PATH/..
         make yaml-sort

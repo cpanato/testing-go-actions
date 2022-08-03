@@ -12,17 +12,17 @@ build: ## Build mattermost-gitops
 ## --------------------------------------
 
 .PHONY: yaml-sort sort-repo sort-teams
-yaml_files = $(shell find github-data -type f -name "*.yaml" ! -name '*repositories*' ! -name '*teams*' | sort -u)
-yaml-sort: sort-repo sort-teams ## Sort all YAML files alphabetically by the username key
+yaml_files = $(shell find ${WORK_DIR}/github-data -type f -name "*.yaml" ! -name '*repositories*' ! -name '*teams*' | sort -u)
+yaml-sort: sort-repo sort-teams## Sort all YAML files alphabetically by the username key
 	@for f in $(yaml_files); do (yq eval -o=json "$$f" | jq '.[] |= sort_by(.username)' | yq eval -P - > "$$f-new") && mv "$$f-new" "$$f"  || exit 1; done; \
 
 sort-repo:
-	yq eval -o=json github-data/repositories.yaml | jq '.repositories |= sort_by(.name) | .repositories[].collaborators |= sort_by(.username)' | yq eval -P - > github-data/repositories-new.yaml || exit 1 ; \
-	mv github-data/repositories-new.yaml github-data/repositories.yaml
+	yq eval -o=json ${WORK_DIR}/github-data/repositories.yaml | jq '.repositories |= sort_by(.name) | .repositories[].collaborators |= sort_by(.username)' | yq eval -P - > ${WORK_DIR}/github-data/repositories-new.yaml || exit 1 ; \
+	mv ${WORK_DIR}/github-data/repositories-new.yaml ${WORK_DIR}/github-data/repositories.yaml
 
 sort-teams:
-	yq eval -o=json github-data/teams.yaml | jq '.teams |= sort_by(.name)' | yq eval -P - > github-data/teams-new.yaml || exit 1 ; \
-	mv github-data/teams-new.yaml github-data/teams.yaml
+	yq eval -o=json ${WORK_DIR}/github-data/teams.yaml | jq '.teams |= sort_by(.name)' | yq eval -P - > ${WORK_DIR}/github-data/teams-new.yaml || exit 1 ; \
+	mv ${WORK_DIR}/github-data/teams-new.yaml ${WORK_DIR}/github-data/teams.yaml
 
 ##@ Helpers
 
