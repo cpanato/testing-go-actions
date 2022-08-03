@@ -1,4 +1,6 @@
 name: Reusable GitHub Sync PR
+description: |
+  This action runs the pulumi preview when opening a PR.
 
 inputs:
   work_dir:
@@ -17,25 +19,22 @@ inputs:
     required: true
     description: 'Secret for accessing Pulumi.'
 
-jobs:
-  preview:
-    name: Preview
-    runs-on: ubuntu-latest
+runs:
+  using: "composite"
 
-    permissions:
-      contents: read
+  steps:
+    - run: "$GITHUB_ACTION_PATH/make" yaml-sort
+      working-directory: '${{ inputs.work_dir }}'
 
-    steps:
-      - run: "$GITHUB_ACTION_PATH/make" yaml-sort
-        working-directory: '${{ inputs.work_dir }}'
+    - run: ls -la
 
-      - run: ls -la
+    - run: ls -la "$GITHUB_ACTION_PATH"
 
-      - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
-        with:
-          command: preview
-          stack-name: '${{ inputs.stack_name }}'
-          refresh: false
-          work-dir: '${{ inputs.work_dir }}'
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ inputs.pulumi_access_token }}
+    - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
+      with:
+        command: preview
+        stack-name: '${{ inputs.stack_name }}'
+        refresh: false
+        work-dir: '${{ inputs.work_dir }}'
+      env:
+        PULUMI_ACCESS_TOKEN: ${{ inputs.pulumi_access_token }}
