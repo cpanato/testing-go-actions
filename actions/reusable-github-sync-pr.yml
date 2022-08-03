@@ -1,0 +1,49 @@
+name: Reusable GitHub Sync PR
+
+on:
+  workflow_call:
+    inputs:
+      work_dir:
+        type: string
+        required: false
+        description: 'Where the Pulumi config are located.'
+      stack_name:
+        type: string
+        required: true
+        description: 'Pulumi stack name.'
+      checkout_sha:
+        required: false
+        type: string
+        description: 'Commit SHA to run at.'
+    secrets:
+      PULUMI_ACCESS_TOKEN:
+        required: false
+        description: 'Secret for accessing Pulumi.'
+
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.checkout_sha }}
+
+      - run: make yaml-sort
+        working-directory: '${{ inputs.work_dir }}'
+
+      - run: ls -la
+
+      - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
+        with:
+          command: preview
+          stack-name: '${{ inputs.stack_name }}'
+          refresh: false
+          work-dir: '${{ inputs.work_dir }}'
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
