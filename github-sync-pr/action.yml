@@ -20,7 +20,7 @@ runs:
     - run: ls -la
       shell: bash
 
-    - run: ls -la "$GITHUB_ACTION_PATH"
+    - run: ls -la "$GITHUB_ACTION_PATH/.."
       shell: bash
 
     - run: $GITHUB_ACTION_PATH/make yaml-sort
