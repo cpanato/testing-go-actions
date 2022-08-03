@@ -23,8 +23,7 @@ runs:
     - run: ls -la "$GITHUB_ACTION_PATH/.."
       shell: bash
 
-    - run: make yaml-sort
-      working-directory: $GITHUB_ACTION_PATH/..
+    - run: "$GITHUB_ACTION_PATH/../make yaml-sort"
       shell: bash
 
     - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
