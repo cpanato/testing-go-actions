@@ -18,11 +18,15 @@ runs:
 
   steps:
     - run: |
+        echo $GITHUB_WORKSPACE
+        echo $GITHUB_WORKSPACE/${{ inputs.work_dir }}
+      shell: bash
+    - run: |
         cd "$GITHUB_ACTION_PATH/..
         make yaml-sort
       shell: bash
       env:
-        WORK_DIR: $GITHUB_WORKSPACE/'${{ inputs.work_dir }}'
+        WORK_DIR: $GITHUB_WORKSPACE/${{ inputs.work_dir }}
 
     - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
       with:
