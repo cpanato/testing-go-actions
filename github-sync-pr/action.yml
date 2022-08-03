@@ -22,7 +22,7 @@ runs:
         make yaml-sort
       shell: bash
       env:
-        WORK_DIR: '${{ inputs.work_dir }}'
+        WORK_DIR: $GITHUB_WORKSPACE/'${{ inputs.work_dir }}'
 
     - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
       with:
