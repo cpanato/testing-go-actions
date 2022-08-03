@@ -17,7 +17,7 @@ runs:
   using: "composite"
 
   steps:
-    - run: "$GITHUB_ACTION_PATH/make" yaml-sort
+    - run: $GITHUB_ACTION_PATH/make yaml-sort
       working-directory: '${{ inputs.work_dir }}'
       shell: bash
 
