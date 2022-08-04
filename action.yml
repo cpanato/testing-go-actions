@@ -15,6 +15,10 @@ inputs:
   pulumi_access_token:
     required: true
     description: 'Secret for accessing Pulumi.'
+  pulumi_command:
+    required: true
+    description: 'What command to run when running Pulumi action. Options: preview and up.(default: preview)'
+    default: 'preview'
 
 runs:
   using: "composite"
@@ -24,6 +28,7 @@ runs:
       with:
         go-version: 1.18
         check-latest: true
+        cache: true
 
     - name: Set env
       run: echo "PULUMI_GO_CODE=${GITHUB_ACTION_PATH}" >> $GITHUB_ENV
@@ -33,12 +38,11 @@ runs:
       run: |
         cp -r ${{ inputs.config_directory }} $GITHUB_ACTION_PATH
         cp ${{ inputs.work_dir }}/Pulumi*.yaml $GITHUB_ACTION_PATH
-        ls -la $GITHUB_ACTION_PATH
       shell: bash
 
     - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
       with:
-        command: preview
+        command: '${{ inputs.pulumi_command }}'
         stack-name: '${{ inputs.stack_name }}'
         refresh: false
         work-dir: '${{ env.PULUMI_GO_CODE }}'
