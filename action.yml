@@ -23,13 +23,24 @@ runs:
         check-latest: true
 
     - run: |
-        echo $GITHUB_WORKSPACE
-        echo $GITHUB_WORKSPACE/${{ inputs.work_dir }}
-      shell: bash
-
-    - run: |
         cd $GITHUB_ACTION_PATH
         WORK_DIR="$GITHUB_WORKSPACE/${{ inputs.work_dir }}" make yaml-sort
+      shell: bash
+
+    - name: Check for changes
+      run: |
+        if [[ $(git diff --stat) != '' ]]; then
+          echo 'Please run make yaml-sort'
+          exit 1
+        else
+          exit 0
+        fi
+      shell: bash
+
+    - name: Copy config to run pulumi
+      run: |
+        cp -r ${{ inputs.work_dir }} $GITHUB_ACTION_PATH
+        ls -la $GITHUB_ACTION_PATH
       shell: bash
 
     - uses: pulumi/actions@d1936f654af277244c132c9c0cbb42c7ad81050a # v3
