@@ -28,7 +28,7 @@ runs:
       shell: bash
 
     - run: |
-        cd $GITHUB_ACTION_PATH/..
+        cd $GITHUB_ACTION_PATH
         WORK_DIR="$GITHUB_WORKSPACE/${{ inputs.work_dir }}" make yaml-sort
       shell: bash
 
