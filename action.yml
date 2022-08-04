@@ -25,6 +25,7 @@ runs:
     - name: Copy config to run pulumi
       run: |
         cp -r ${{ inputs.work_dir }} $GITHUB_ACTION_PATH
+        cp ${{ inputs.work_dir }}/Pulumi*.yaml $GITHUB_ACTION_PATH
         ls -la $GITHUB_ACTION_PATH
       shell: bash
 
