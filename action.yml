@@ -6,6 +6,9 @@ inputs:
   work_dir:
     required: false
     description: 'Where the Pulumi config are located.'
+  config_directory:
+    required: false
+    description: 'Where the Github config are located.'
   stack_name:
     required: true
     description: 'Pulumi stack name.'
@@ -28,7 +31,7 @@ runs:
 
     - name: Copy config to run pulumi
       run: |
-        cp -r ${{ inputs.work_dir }} $GITHUB_ACTION_PATH
+        cp -r ${{ inputs.config_directory }} $GITHUB_ACTION_PATH
         cp ${{ inputs.work_dir }}/Pulumi*.yaml $GITHUB_ACTION_PATH
         ls -la $GITHUB_ACTION_PATH
       shell: bash
