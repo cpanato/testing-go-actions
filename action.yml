@@ -33,6 +33,6 @@ runs:
         command: preview
         stack-name: '${{ inputs.stack_name }}'
         refresh: false
-        work-dir: '${{ inputs.work_dir }}'
+        work-dir: '${{ env.GITHUB_ACTION_PATH }}'
       env:
         PULUMI_ACCESS_TOKEN: ${{ inputs.pulumi_access_token }}
