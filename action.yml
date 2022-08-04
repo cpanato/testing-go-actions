@@ -22,6 +22,10 @@ runs:
         go-version: 1.18
         check-latest: true
 
+    - name: Set env
+      run: echo "PULUMI_GO_CODE=${GITHUB_ACTION_PATH}" >> $GITHUB_ENV
+      shell: bash
+
     - name: Copy config to run pulumi
       run: |
         cp -r ${{ inputs.work_dir }} $GITHUB_ACTION_PATH
@@ -34,6 +38,6 @@ runs:
         command: preview
         stack-name: '${{ inputs.stack_name }}'
         refresh: false
-        work-dir: '${{ env.GITHUB_ACTION_PATH }}'
+        work-dir: '${{ env.PULUMI_GO_CODE }}'
       env:
         PULUMI_ACCESS_TOKEN: ${{ inputs.pulumi_access_token }}
