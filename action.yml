@@ -54,5 +54,7 @@ runs:
         work-dir: '${{ env.PULUMI_GO_CODE }}'
         comment-on-pr: ${{ inputs.comment_on_pr }}
         github-token: ${{ inputs.gh_token }}
+        diff: true
+        edit-pr-comment: true
       env:
         PULUMI_ACCESS_TOKEN: ${{ inputs.pulumi_access_token }}
