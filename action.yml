@@ -23,7 +23,7 @@ inputs:
     required: false
     description: 'Used when doing a Pulumi preview for Pull Requests'
     default: 'false'
-  github_token:
+  gh_token:
     required: true
     description: 'GitHub Token with pull_request scope to be able to post comments in the PR'
 
@@ -53,6 +53,6 @@ runs:
         refresh: false
         work-dir: '${{ env.PULUMI_GO_CODE }}'
         comment-on-pr: ${{ inputs.comment_on_pr }}
-        github-token: ${{ inputs.github_token }}
+        github-token: ${{ inputs.gh_token }}
       env:
         PULUMI_ACCESS_TOKEN: ${{ inputs.pulumi_access_token }}
